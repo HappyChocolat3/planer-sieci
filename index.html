@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Planer Sieci – projektuj strukturę swojej sieci</title>
+  <meta name="description" content="Darmowy planer struktury sieci: modemy, routery, switche, anteny, punkty dostępowe, drukarki i więcej. Działa w przeglądarce.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">🌐 <strong>Planer Sieci</strong></div>
+    <div class="tools">
+      <button id="btnSelect" class="tool active" title="Zaznacz / przesuń (V)">🖱️ Wybierz</button>
+      <button id="btnConnect" class="tool" title="Łącz urządzenia (C)">🔗 Połącz</button>
+      <select id="linkKind" title="Rodzaj nowego połączenia">
+        <option value="eth">Ethernet (kabel)</option>
+        <option value="fiber">Światłowód</option>
+        <option value="wifi">Wi‑Fi</option>
+        <option value="coax">Koncentryk</option>
+        <option value="radio">Radiolinia</option>
+        <option value="usb">USB</option>
+        <option value="phone">Linia tel. / DSL</option>
+      </select>
+      <span class="sep"></span>
+      <button id="btnUndo" title="Cofnij (Ctrl+Z)">↶</button>
+      <button id="btnRedo" title="Ponów (Ctrl+Y)">↷</button>
+      <button id="btnZoomIn" title="Przybliż">＋</button>
+      <button id="btnZoomOut" title="Oddal">－</button>
+      <button id="btnFit" title="Dopasuj widok">⤢</button>
+      <label class="chk" title="Przyciągaj do siatki"><input type="checkbox" id="chkSnap" checked> Siatka</label>
+      <span class="sep"></span>
+      <button id="btnExample" title="Wczytaj przykładową sieć">📋 Przykład</button>
+      <button id="btnNew" title="Nowy, pusty projekt">🗋 Nowy</button>
+      <button id="btnSave" title="Zapisz projekt do pliku JSON">💾 Zapisz</button>
+      <button id="btnLoad" title="Wczytaj projekt z pliku JSON">📂 Wczytaj</button>
+      <button id="btnPng" title="Eksport do obrazka PNG">🖼️ PNG</button>
+      <button id="btnPrint" title="Drukuj">🖨️</button>
+      <input type="file" id="fileInput" accept=".json,application/json" hidden>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="palette" id="palette">
+      <h3>Urządzenia</h3>
+      <p class="hint">Przeciągnij na planszę lub kliknij.</p>
+      <div id="paletteList"></div>
+    </aside>
+
+    <section class="stage-wrap">
+      <svg id="stage" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e3e8ef" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <rect id="bg" x="-50000" y="-50000" width="100000" height="100000" fill="url(#grid)"/>
+        <g id="viewport">
+          <g id="linksLayer"></g>
+          <line id="ghostLink" class="ghost" visibility="hidden"/>
+          <g id="nodesLayer"></g>
+        </g>
+      </svg>
+      <div class="status" id="status">Tryb: wybierz</div>
+      <div class="empty" id="emptyMsg">
+        <h2>Zacznij planować sieć 🚀</h2>
+        <p>Przeciągnij urządzenia z lewej strony, potem użyj <b>🔗 Połącz</b> (klawisz <kbd>C</kbd>), żeby je połączyć.</p>
+        <p>Albo kliknij <b>📋 Przykład</b>, żeby zobaczyć gotową sieć domową.</p>
+      </div>
+    </section>
+
+    <aside class="side">
+      <div class="panel" id="propsPanel">
+        <h3>Właściwości</h3>
+        <div id="props"><p class="hint">Kliknij urządzenie lub połączenie, żeby edytować.</p></div>
+      </div>
+      <div class="panel">
+        <h3>Podsumowanie</h3>
+        <div id="summary"></div>
+      </div>
+      <div class="panel">
+        <h3>Uwagi</h3>
+        <ul id="warnings"></ul>
+      </div>
+      <div class="panel help">
+        <h3>Skróty</h3>
+        <ul>
+          <li><kbd>V</kbd> wybierz, <kbd>C</kbd> połącz</li>
+          <li><kbd>Del</kbd> usuń zaznaczone</li>
+          <li><kbd>Ctrl+D</kbd> duplikuj urządzenie</li>
+          <li><kbd>Ctrl+Z</kbd> / <kbd>Ctrl+Y</kbd> cofnij / ponów</li>
+          <li>Kółko myszy – zoom, przeciąganie tła – przesuwanie</li>
+          <li>Projekt zapisuje się automatycznie w przeglądarce</li>
+        </ul>
+      </div>
+    </aside>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
